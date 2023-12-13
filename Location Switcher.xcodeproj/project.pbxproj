@@ -12,6 +12,10 @@
 		A32BD79C2B2A37FF0081F270 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32BD79B2B2A37FF0081F270 /* Item.swift */; };
 		A32BD79E2B2A38000081F270 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32BD79D2B2A38000081F270 /* Assets.xcassets */; };
 		A32BD7A12B2A38000081F270 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A32BD7A02B2A38000081F270 /* Preview Assets.xcassets */; };
+		A32BD7A92B2A392D0081F270 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32BD7A82B2A392D0081F270 /* MapView.swift */; };
+		A32BD7AC2B2A52F90081F270 /* Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32BD7AB2B2A52F90081F270 /* Process.swift */; };
+		A32BD7AF2B2A53AC0081F270 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32BD7AE2B2A53AC0081F270 /* Models.swift */; };
+		A32BD7B12B2A53E20081F270 /* SimCtl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32BD7B02B2A53E20081F270 /* SimCtl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,10 @@
 		A32BD79D2B2A38000081F270 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A32BD7A02B2A38000081F270 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A32BD7A22B2A38000081F270 /* Location_Switcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Location_Switcher.entitlements; sourceTree = "<group>"; };
+		A32BD7A82B2A392D0081F270 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		A32BD7AB2B2A52F90081F270 /* Process.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Process.swift; sourceTree = "<group>"; };
+		A32BD7AE2B2A53AC0081F270 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		A32BD7B02B2A53E20081F270 /* SimCtl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimCtl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +62,11 @@
 		A32BD7962B2A37FF0081F270 /* Location Switcher */ = {
 			isa = PBXGroup;
 			children = (
+				A32BD7AD2B2A53A00081F270 /* SimCtl */,
+				A32BD7AA2B2A52E40081F270 /* Extensions */,
 				A32BD7972B2A37FF0081F270 /* Location_SwitcherApp.swift */,
 				A32BD7992B2A37FF0081F270 /* ContentView.swift */,
+				A32BD7A82B2A392D0081F270 /* MapView.swift */,
 				A32BD79B2B2A37FF0081F270 /* Item.swift */,
 				A32BD79D2B2A38000081F270 /* Assets.xcassets */,
 				A32BD7A22B2A38000081F270 /* Location_Switcher.entitlements */,
@@ -70,6 +81,23 @@
 				A32BD7A02B2A38000081F270 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A32BD7AA2B2A52E40081F270 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A32BD7AB2B2A52F90081F270 /* Process.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A32BD7AD2B2A53A00081F270 /* SimCtl */ = {
+			isa = PBXGroup;
+			children = (
+				A32BD7AE2B2A53AC0081F270 /* Models.swift */,
+				A32BD7B02B2A53E20081F270 /* SimCtl.swift */,
+			);
+			path = SimCtl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +171,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A32BD79A2B2A37FF0081F270 /* ContentView.swift in Sources */,
+				A32BD7AC2B2A52F90081F270 /* Process.swift in Sources */,
+				A32BD7B12B2A53E20081F270 /* SimCtl.swift in Sources */,
+				A32BD7A92B2A392D0081F270 /* MapView.swift in Sources */,
+				A32BD7AF2B2A53AC0081F270 /* Models.swift in Sources */,
 				A32BD79C2B2A37FF0081F270 /* Item.swift in Sources */,
 				A32BD7982B2A37FF0081F270 /* Location_SwitcherApp.swift in Sources */,
 			);
@@ -274,7 +306,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Location Switcher/Location_Switcher.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -302,7 +336,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Location Switcher/Location_Switcher.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
