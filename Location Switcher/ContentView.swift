@@ -9,86 +9,79 @@ import CoreLocation
 import SwiftUI
 import SwiftData
 
+extension Optional where Wrapped == String {
+    var _bound: String? {
+        get {
+            return self
+        }
+        set {
+            self = newValue
+        }
+    }
+    public var bound: String {
+        get {
+            return _bound ?? ""
+        }
+        set {
+            _bound = newValue.isEmpty ? nil : newValue
+        }
+    }
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-
-    @State private var activeItem: Item?
-    @State private var selectedPosition: CLLocationCoordinate2D?
+    @State private var selectedMapItem: SelectableItem?
+    @State private var name: PersonNameComponents? = nil
 
     var body: some View {
         NavigationSplitView {
-            sidebarView
+            SidebarView(items: items, selectedMapItem: $selectedMapItem)
                 .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-                .toolbar {
-                    ToolbarItem {
-                        Button(action: addItem) {
-                            Label("Add Item", systemImage: "plus")
-                        }
-                        .disabled(selectedPosition == nil)
-                    }
-                }
+        } content: {
+            MapView(items: items, selectedMapItem: $selectedMapItem)
         } detail: {
             Group {
-                MapView(items: items, activeItem: $activeItem, selectedPosition: $selectedPosition)
-            }
-        }
-    }
-    
-    private var sidebarView: some View {
-        List(selection: $activeItem) {
-            ForEach(items) { item in
-                Text(item.name)
-                    .padding(.horizontal, 3)
-                    .padding(.vertical, 2)
-                    .clipShape(Capsule())
-                    .onTapGesture {
-                        selectListItem(item)
+                if let selectedMapItem {
+                    Form {
+                        Text("Latitude")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                        TextField("", text: Binding(get: {
+                            "\(selectedMapItem.coordinates.latitude)"
+                        }, set: { value, _ in
+                            guard let latitude = Double(value) else { return }
+                            self.selectedMapItem?.latitude = latitude
+                        }))
+                        Text("Longitude")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                        TextField("", text: Binding(get: {
+                            "\(selectedMapItem.coordinates.longitude)"
+                        }, set: { value, _ in
+                            guard let longitude = Double(value) else { return }
+                            self.selectedMapItem?.longitude = longitude
+                        }))
+
+                        Text("Name")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                        TextField("", text: Binding<String>(
+                            get: {
+                                return self.selectedMapItem?.name ?? ""
+                        },
+                            set: { newString in
+                                self.selectedMapItem?.name = newString
+                        }))
                     }
-                .contextMenu {
-                    Button("Delete...") {
-                        delete(item: item)
-                    }
-                    TextField("Name", text: Binding(get: {
-                        item.name
-                    }, set: { new, _ in
-                        item.name = new
-                    }))
+                } else {
+                    Text("Please select a location first.")
                 }
-                .tag(item)
-            }
-            .onDelete(perform: deleteItems)
-        }
-        .listStyle(.sidebar)
-    }
-
-    private func addItem() {
-        withAnimation {
-            guard let selectedPosition else { return }
-            let newItem = Item(latitude: selectedPosition.latitude, longitude: selectedPosition.longitude)
-            modelContext.insert(newItem)
-            self.selectedPosition = nil
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
             }
         }
     }
-    private func delete(item: Item) {
-        withAnimation {
-            modelContext.delete(item)
-        }
-    }
 
-    private func selectListItem(_ item: Item) {
-        try! SimCtl.set(location: item.coordinates)
 
-        activeItem = item
-    }
 }
 
 #Preview {

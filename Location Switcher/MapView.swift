@@ -10,9 +10,8 @@ import SwiftUI
 
 struct MapView: View {
     var items: [Item]
-    @Binding var activeItem: Item?
+    @Binding var selectedMapItem: SelectableItem?
 
-    @Binding var selectedPosition: CLLocationCoordinate2D?
     @State private var position: MapCameraPosition = .userLocation(
         fallback: .camera(
             MapCamera(centerCoordinate: .init(latitude: 53.169929117557196, longitude: 8.212793159727328), distance: 0)
@@ -25,9 +24,10 @@ struct MapView: View {
                 // show user location
                 UserAnnotation()
 
-                // tapped location
-                if let selectedPosition {
-                    Annotation("Selection", coordinate: selectedPosition) {
+                // new location
+                if let selectedMapItem,
+                   !items.map(\.coordinates).contains(selectedMapItem.coordinates) {
+                    Annotation(selectedMapItem.name, coordinate: selectedMapItem.coordinates) {
                         Image(systemName: "mappin")
                             .foregroundStyle(.black)
                             .padding(6)
@@ -41,7 +41,7 @@ struct MapView: View {
                         Image(systemName: "mappin")
                             .foregroundStyle(.black)
                             .padding(6)
-                            .background(item == activeItem ? .yellow : .gray)
+                            .background(item.coordinates == selectedMapItem?.coordinates ? .yellow : .gray)
                             .clipShape(Circle())
                     }
                 }
@@ -59,10 +59,10 @@ struct MapView: View {
                 MapUserLocationButton()
             }
             .onTapGesture(perform: { screenCoord in
-                let pinLocation = proxy.convert(screenCoord, from: .local)
-                selectedPosition = pinLocation
+                guard let pinLocation = proxy.convert(screenCoord, from: .local) else { return }
+                selectedMapItem = SelectableItem(name: "Selection", coordinates: .init(latitude: pinLocation.latitude, longitude: pinLocation.longitude))
             })
-            .onChange(of: activeItem) { oldValue, newValue in
+            .onChange(of: selectedMapItem) { _, newValue in
                 guard let newValue else { return }
                 withAnimation {
                     // TODO: ideally the zoomlevel would not change
@@ -76,6 +76,6 @@ struct MapView: View {
 
 #if DEBUG
 #Preview {
-    MapView(items: [], activeItem: .constant(nil), selectedPosition: .constant(nil))
+    MapView(items: [], selectedMapItem: .constant(nil))
 }
 #endif

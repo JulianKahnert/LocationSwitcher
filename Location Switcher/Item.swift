@@ -10,6 +10,8 @@ import SwiftData
 
 @Model
 final class Item {
+    @Attribute(.unique)
+    var id: UUID
     var name: String
     var latitude: Double
     var longitude: Double
@@ -19,13 +21,10 @@ final class Item {
         .init(latitude: latitude, longitude: longitude)
     }
 
-    init(name: String? = nil, latitude: Double, longitude: Double) {
+    init(id: UUID = UUID(), name: String? = nil, latitude: Double, longitude: Double) {
+        self.id = id
         self.name = name ?? "\(String(format: "%.4f", latitude)) | \(String(format: "%.4f", longitude))"
         self.latitude = latitude
         self.longitude = longitude
     }
-}
-
-extension Item: Hashable, Equatable {
-    
 }
